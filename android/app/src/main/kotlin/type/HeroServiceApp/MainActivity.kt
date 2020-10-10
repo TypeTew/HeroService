@@ -1,0 +1,6 @@
+package type.HeroServiceApp
+
+import io.flutter.embedding.android.FlutterActivity
+
+class MainActivity: FlutterActivity() {
+}

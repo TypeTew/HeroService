@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:HeroServiceApp/screens/components/passwordwidget.dart';
 import 'package:HeroServiceApp/service/rest_api.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class LoginScreen extends StatefulWidget {
   LoginScreen({Key key}) : super(key: key);
@@ -107,16 +108,27 @@ class _LoginScreenState extends State<LoginScreen> {
 
   //ฟังก์ชันเช็คการล็อคอิน
   void _loginProcess(userData) async {
-    var response = await CallAPI().loginAPI(userData);
-    var body = json.decode(response.body);
+    try {
+      var response = await CallAPI().loginAPI(userData);
+      var body = json.decode(response.body);
 
-    print(body['message']);
+      print(body['message']);
 
-    // เช็คว่าถ้าลงทะเบียนสำเร็จ
-    if (body['status'] == 'success' && body['data']['status'] == '1') {
-      Navigator.pushReplacementNamed(context, '/dashboard');
-    } else {
-      _showDialog('มีข้อผิดพลาด', 'ข้อมูลไม่ถูกต้อง ลองใหม่');
+      // เช็คว่าถ้าลงทะเบียนสำเร็จ
+      if (body['status'] == 'success' && body['data']['status'] == '1') {
+        Navigator.pushReplacementNamed(context, '/dashboard');
+      } else {
+        _showDialog('มีข้อผิดพลาด', 'ข้อมูลไม่ถูกต้อง ลองใหม่');
+      }
+    } catch (e) {
+      Fluttertoast.showToast(
+          msg: "เกิดข้อผิดพลาดการโหลดข้อมูล",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
     }
   }
 

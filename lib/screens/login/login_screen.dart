@@ -3,6 +3,7 @@ import 'package:HeroServiceApp/screens/components/passwordwidget.dart';
 import 'package:HeroServiceApp/service/rest_api.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   LoginScreen({Key key}) : super(key: key);
@@ -85,8 +86,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       if (formKey.currentState.validate()) {
                         formKey.currentState.save();
                         // print(_email + _password);
-
-                        var userData = {"email": _email, "password": _password};
+                        var userData = {'email': _email, 'password': _password};
                         _loginProcess(userData);
                       }
                     },
@@ -116,6 +116,23 @@ class _LoginScreenState extends State<LoginScreen> {
 
       // เช็คว่าถ้าลงทะเบียนสำเร็จ
       if (body['status'] == 'success' && body['data']['status'] == '1') {
+        // สร้าง Object แบบ Sharedprefference
+        SharedPreferences sharedPreferences =
+            await SharedPreferences.getInstance();
+
+        // เก็บค่าลงตัวแปรแบบ SharedPrefference
+        sharedPreferences.setInt('appStep', 2);
+        sharedPreferences.setString(
+            'storeFullname',
+            body['data']['prename'] +
+                body['data']['firstname'] +
+                ' ' +
+                body['data']['lastname']);
+        sharedPreferences.setString('storeAvatar', body['data']['avatar']);
+        sharedPreferences.setString('storeEmail', body['data']['email']);
+        sharedPreferences.setString('storePassword', _password);
+
+        // ส่งไปหน้า dashboard
         Navigator.pushReplacementNamed(context, '/dashboard');
       } else {
         _showDialog('มีข้อผิดพลาด', 'ข้อมูลไม่ถูกต้อง ลองใหม่');

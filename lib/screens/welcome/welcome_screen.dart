@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class WelcomeScreen extends StatefulWidget {
   WelcomeScreen({Key key}) : super(key: key);
@@ -11,10 +12,14 @@ class WelcomeScreen extends StatefulWidget {
 class _WelcomeScreenState extends State<WelcomeScreen> {
   final introKey = GlobalKey<_WelcomeScreenState>();
 
-  void _onIntroEnd(context) {
+  void _onIntroEnd(context) async {
+    //สร้าง Object แบบ SharedPreferences
+    SharedPreferences sharedPrefernces = await SharedPreferences.getInstance();
+
+    //เก็บค่าลงตัวแปรแบบ sharedPrefernces
+    sharedPrefernces.setInt('appStep', 1);
     // เมื่อทำการเรียกไปหน้าสุด
     // ส่งไปหน้า dashboard
-    // Navigator.pushNamed(context, '/dashboard');
     Navigator.pushReplacementNamed(context, '/login'); //โหลดมาทัพหน้าแรก
   }
 
@@ -43,16 +48,14 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
       key: introKey,
       pages: [
         PageViewModel(
-          title: "Fractional shares",
-          body:
-              "Instead of having to buy an entire share, invest any amount you want.",
+          title: "เริ่มสร้างความมั่นคงทางการเงิน",
+          body: "บริการทางการเงินที่ตอบโจทย์ทุกวัยกับเราได้แล้ววันนี้",
           image: _buildImage('onboard1'),
           decoration: pageDecoration,
         ),
         PageViewModel(
-          title: "Learn as you go",
-          body:
-              "Download the Stockpile app and master the market with our mini-lesson.",
+          title: "เรียนรู้การให้เงินทำงาน",
+          body: "ปล่อยให้เงินของคุณทำงานแทนคุณได้แล้ว",
           image: _buildImage('onboard2'),
           decoration: pageDecoration,
         ),
@@ -66,33 +69,18 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
         PageViewModel(
           title: "Another title page",
           body: "Another beautiful body text for this example onboarding",
-          image: _buildImage('onboard2'),
-          // footer: RaisedButton(
-          //   onPressed: () {
-          //     // introKey.currentState?.animateScroll(0);
-          //   },
-          //   child: const Text(
-          //     'FooButton',
-          //     style: TextStyle(color: Colors.white),
-          //   ),
-          //   color: Colors.lightBlue,
-          //   shape: RoundedRectangleBorder(
-          //     borderRadius: BorderRadius.circular(8.0),
-          //   ),
-          // ),
+          image: _buildImage('onboard4'),
           decoration: pageDecoration,
         ),
         PageViewModel(
-          title: "Title of last page",
+          title: "เริ่มทดลองใช้งานฟรี",
           bodyWidget: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: const [
-              Text("Click on ", style: bodyStyle),
-              Icon(Icons.edit),
-              Text(" to edit a post", style: bodyStyle),
+              Text("เริ่มทดสอบระบบกับเราได้แล้ววันนี้", style: bodyStyle),
             ],
           ),
-          image: _buildImage('onboard1'),
+          image: _buildImage('onboard5'),
           decoration: pageDecoration,
         ),
       ],

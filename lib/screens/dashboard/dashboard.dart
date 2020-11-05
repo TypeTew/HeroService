@@ -13,10 +13,10 @@ class DashboardScreen extends StatefulWidget {
 
 class _DashboardScreenState extends State<DashboardScreen> {
   //สร้างตัวแปรแบบ list ไว้เก็บรายการของ tabl bottom
-  int _currentIndex = 0;
+  int _currentIndex = 2;
   String _title = "Hero Service";
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+  Widget _actionWidget;
+  //String
 
   final List<Widget> _children = [
     MarketScreen(),
@@ -25,31 +25,64 @@ class _DashboardScreenState extends State<DashboardScreen> {
     NotificationScreen(),
     SettingScreen(),
   ];
+  // สร้าง Widget action สำหรับไว้แยกแสดงผล Appbar
+  Widget _homeActionBar() {
+    return InkWell(
+      onTap: () {
+        Navigator.pushNamed(context, '/qrcode');
+      },
+      child: Padding(
+        padding: const EdgeInsets.only(right: 15.0),
+        child: Row(
+          children: [Icon(Icons.center_focus_strong), Text(' SCAN')],
+        ),
+      ),
+    );
+  }
 
-  //สร้างฟังก์ชันเพื่อใช้ในการเปลี่ยนหน้า
-  void _onTabTapped(int index) {
+  Widget _marketActionBar() {
+    return InkWell(
+      onTap: () {},
+      child: Row(
+        children: [Icon(Icons.center_focus_strong), Text('Scan')],
+      ),
+    );
+  }
+
+  // สร้างฟังก์ชันเพื่อใช้ในการเปลี่ยนหน้า
+  void onTabTapped(int index) {
     setState(() {
       _currentIndex = index;
-
-      //เปลี่ยน  title  ไปตาม tab ที่เลือก
+      // เปลี่ยน title ไปตาม tab ที่เลือก
       switch (index) {
         case 0:
           _title = 'ตลาด';
+          _actionWidget = _marketActionBar();
           break;
         case 1:
           _title = 'รายการจอง';
+          _actionWidget = Container();
           break;
         case 2:
-          _title = 'บริการ';
+          _title = 'หน้าหลัก';
+          _actionWidget = _homeActionBar();
           break;
         case 3:
           _title = 'แจ้งเตือน';
+          _actionWidget = Container();
           break;
         case 4:
           _title = 'อื่นๆ';
+          _actionWidget = Container();
           break;
       }
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _actionWidget = _homeActionBar();
   }
 
   @override
@@ -57,9 +90,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.teal,
-        title: Center(child: Text('$_title')),
+        title: Text('$_title'),
+        actions: [_actionWidget],
       ),
-
       // bottomNavigationBar: BottomNavigationBar(
       //   onTap: _onTabTapped,
       //   currentIndex: _currentIndex, //กดที่ไหนก็ตามจะคืนค่า tab มาให้
@@ -128,7 +161,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             color: Colors.white,
           ),
         ],
-        onTap: _onTabTapped,
+        onTap: onTabTapped,
       ),
       body: _children[_currentIndex],
     );

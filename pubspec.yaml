@@ -33,7 +33,16 @@ dependencies:
   http: ^0.12.2
   fluttertoast: ^7.1.1
   curved_navigation_bar: ^0.3.4
-
+  shared_preferences: ^0.5.12+2
+  connectivity: ^0.4.9+5
+  url_launcher: ^5.7.8
+  qr_code_scanner: ^0.0.13
+  image_picker_saver: ^0.3.0
+  path_provider: ^1.6.22
+  path: ^1.7.0
+  rxdart: ^0.22.5
+  qr_code_tools: ^0.0.6
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -58,6 +67,7 @@ flutter:
   #         weight: 700
   # To add assets to your application, add an assets section, like this:
   assets:
+    - assets/images/
     - assets/images/menu_icon/
     - assets/images/welcome/
     # - images/a_dot_ham.jpeg
